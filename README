@@ -1,0 +1,64 @@
+# crawl-edit-upload
+
+/*----------------------------------*\
+          TOOL CRAWLING DATA
+\*----------------------------------*/
+
+1. Chức năng:
+  - Đầu vào: URL website trên Amazon với keyword cụ thể
+  - Đầu ra: file chứa thông tin về toàn bộ mẫu áo dưới định dạng csv
+
+2. Tư tưởng:
+  - Mở trang web với url đã nhập.
+  - Truy cập lần lượt từng mẫu áo trên trang.
+  - Lưu lại thông tin các trường vào file.
+  - Quay lại trang trước.
+  - Lặp lại 3 bước trên với kết quả tiếp theo.
+  - Nếu kết thúc trang, chuyển sang trang kế tiếp.
+  - Lặp lại 5 bước trên với trang tiếp theo đến hết.
+
+  * Optional:
+  - Trước khi lưu áo vào database: kiểm tra trùng lặp theo tên và tag
+
+3. Tiến hành:
+  * Ngôn ngữ sử dụng: Python 2
+  * Browser: Chromium/Chrome
+  - Khởi động tool, nhập url và save path
+  - Dựa vào input url lưu lại mã nguồn trang vào 1 file .txt
+  - List các sản phẩm tìm đc:
+    + Tạo mảng rỗng để chứa id các sản phẩm trên trang
+    + Quét theo dòng, tìm theo 2 từ khóa 'data-asin="' và '<!--' .
+      - Gặp 'data-asin="' thì 10 kí tự tiếp theo là mã sản phẩm, lưu mã này vào mảng nếu chưa có
+      - Gặp '<!--' (comment của html) thì bỏ qua việc tìm kiếm đến khi gặp '-->' .
+    + Lặp lại bước trên đến hết file txt.
+    + Sang trang tiếp:  // TO DO
+    + Kết quả: 1 mảng chứa id các sản phẩm trên trang
+  - Fetch thông tin sản phẩm:
+    + Với mỗi mã sản phẩm trong mảng tìm đc, truy cập trang sản phẩm:
+      https://www.amazon.com/dp/<mã sản phẩm here>
+    + Tiến hành lấy thông tin theo template. // TO DO
+    + Lưu thông tin vào file csv.
+    + Chuyển sang sản phẩm tiếp
+  - Lưu file csv vào save path, xóa file text, dọn dẹp dữ liệu
+
+4. Giao diện:
+
+  +-----------------------------------------------------------+
+  | <%%%_______________CRAWLING TOOL v.0.1_______________%%%> |
+  |                                                           |
+  |           +-------------------------------------------+	  |
+  | URL       | (input)                                   |   |
+  |           +-------------------------------------------+   |
+  |           +-------------------------------------------+   |
+  | Save path | (input)                                   |   |
+  |           +-------------------------------------------+   |
+  |                      +-------------+                      |
+  |                      |    CRAWL    |                      |
+  |                      +-------------+                      |
+  |           +-------------------------------------------+   |
+  | CSV file  | (unclickable)                             |   |
+  |           +-------------------------------------------+   |
+  |                      +-------------+                      |
+  |                      |  OPEN FILE  |                      |
+  |                      +-------------+                      |
+  +-----------------------------------------------------------+
